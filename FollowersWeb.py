@@ -9,6 +9,79 @@ import urllib3
 
 # Disable SSL verification warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+def check_instagram_username_exists(username):
+    # List of proxies with different usernames, passwords, and host details
+    proxies_list = [
+        {
+            "http": "http://brd-customer-hl_f0d25c59-zone-residential_proxy1:883zbumj1r1p@brd.superproxy.io:33335",
+            "https": "https://brd-customer-hl_f0d25c59-zone-residential_proxy1:883zbumj1r1p@brd.superproxy.io:33335"
+        },
+        {
+            "http": "http://brd-customer-hl_de20a170-zone-residential_proxy1:wxcp53p9mbzs@brd.superproxy.io:33335",
+            "https": "https://brd-customer-hl_de20a170-zone-residential_proxy1:wxcp53p9mbzs@brd.superproxy.io:33335"
+        },
+        {
+            "http": "http://brd-customer-hl_0a108a61-zone-residential_proxy1:omfu311fmszk@brd.superproxy.io:33335",
+            "https": "https://brd-customer-hl_0a108a61-zone-residential_proxy1:omfu311fmszk@brd.superproxy.io:33335"
+        },
+        {
+            "http": "http://brd-customer-hl_7fb69707-zone-residential_proxy1:d379rnk5pkut@brd.superproxy.io:33335",
+            "https": "https://brd-customer-hl_7fb69707-zone-residential_proxy1:d379rnk5pkut@brd.superproxy.io:33335"
+        }
+    ]
+    
+    # Randomly choose a proxy from the list
+    proxy = random.choice(proxies_list)
+    
+    # Instagram API URL and headers
+    url = f"https://i.instagram.com/api/v1/users/web_profile_info/?username={username}"
+    headers = {
+        "User-Agent": "Instagram 155.0.0.37.107 Android",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "X-IG-App-ID": "936619743392459",
+        "X-ASBD-ID": "198387",
+        "X-IG-WWW-Claim": "0",
+        "Referer": "https://www.instagram.com/",
+    }
+
+    # Number of retries
+    max_retries = 3
+    retries = 0
+
+    while retries < max_retries:
+        try:
+            proxy = random.choice(proxies_list)
+            # Send the GET request using the chosen proxy
+            response = requests.get(url, headers=headers, proxies=proxy, verify=False)
+            
+            # If the response status code is 404, the user doesn't exist
+            if response.status_code == 404:
+                return False, f"Instagram user '{username}' does not exist."
+            
+            # If it's any other status code (200, 500, etc.), treat it as user exists
+            elif response.status_code == 200:
+                return True, ""
+            else:
+                print(response.status_code)
+                retries += 1
+                if retries < max_retries:
+                    # Retry if the error is other than 404
+                    print(f"Attempt {retries} failed. Retrying...")
+                else:
+                    # Return error after max retries
+                    return False, f"Error: Unable to verify username '{username}' . Please try again."
+        
+        except requests.exceptions.RequestException as e:
+            retries += 1
+            if retries < max_retries:
+                # Retry on network errors
+                print(f"Network error (attempt {retries}): {e}. Retrying...")
+            else:
+                return False, f"Error checking Instagram username after {max_retries} attempts: {e}"
+    
+    return False, "Max retries reached. Unable to verify username."
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed for flashing messages
@@ -140,12 +213,13 @@ def check_followers_change(username, output_dir):
                     send_notification(f"( {username} ) Followers increased: {current_followers-previous_followers})", user_key)
                 else:
                     send_notification(f"( {username} ) No change: {current_followers} ,{previous_followers}",user_key,-1)
+                    print(username)
             else:
                 send_notification(f"First time checking. Current followers count: {current_followers}", user_key)
             write_current_followers(file_path, current_followers)
         else:
             send_notification("Failed to get current followers count.", user_key,-1)
-
+            continue
         # Ensure we wait for 10 seconds before the next check
         time.sleep(300)  # Wait for 10 seconds before checking again
 
@@ -155,11 +229,20 @@ def index():
         username = request.form['username']
         user_key = request.form['user_key']
 
+        # Check if the username exists by querying the Instagram API
+        exists, error_message = check_instagram_username_exists(username)
+
+        if not exists:
+            flash(error_message, "error")
+            return redirect(url_for('index'))
+
         with threads_lock:
             # Check if the username is already being monitored
             if username in threads and threads[username].is_alive():
                 flash(f"The username {username} is already being monitored.", "error")
                 return redirect(url_for('index'))
+
+            # Save the user details only if the username exists
             save_pushover_credentials(username, user_key)
             
             output_dir = 'uname'
@@ -175,6 +258,7 @@ def index():
         send_notification(f"New User Registered ( {username} )", "u8ycu2qxyrtiyk8e6e6okvj6dhfreh",)
         return redirect(url_for('index'))
     return render_template('index.html')
+
 
 def start_existing_threads():
     if os.path.exists(CREDENTIALS_FILE):
