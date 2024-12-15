@@ -221,7 +221,7 @@ def check_followers_change(username, output_dir):
             send_notification("Failed to get current followers count.", user_key,-1)
             continue
         # Ensure we wait for 10 seconds before the next check
-        time.sleep(300)  # Wait for 10 seconds before checking again
+        time.sleep(600)  # Wait for 10 seconds before checking again
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
