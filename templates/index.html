@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Followers Checker</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Instagram_logo_2022.svg/1024px-Instagram_logo_2022.svg.png" type="image/png">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* Header Section */
+        .header {
+            width: 100%; /* Ensure header spans the full width */
+            background: linear-gradient(135deg, #f9a8d4, #ff512f);
+            background-size: 400% 400%;
+            animation: gradientAnimation 5s ease infinite;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            position: relative;
+        }
+
+        .header img {
+            width: 100px; /* Adjust image size */
+            height: auto;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .header h1 {
+            display: inline-block;
+            color: #fff;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Form Section */
+        .form-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            margin-top: 20px; /* Space between header and form */
+            border: 1px solid #f0f0f0;
+        }
+
+        /* Form Input Styles */
+        input[type="text"] {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff512f;
+            outline: none;
+            box-shadow: 0 0 12px rgba(255, 81, 47, 0.5);
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(135deg, #f9a8d4, #ff512f);
+            background-size: 400% 400%;
+            animation: gradientAnimation 5s ease infinite;
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"]:hover {
+            background: linear-gradient(135deg, #ff512f, #f9a8d4);
+        }
+
+        /* Instructions Box Styling */
+        .instructions-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            margin-top: 30px;
+            border: 1px solid #f0f0f0;
+            color: #555;
+            text-align: left;
+        }
+
+        .instructions-box h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .instructions-box p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .instructions-box ul {
+            margin-left: 20px;
+            list-style: disc;
+        }
+
+        /* Animation for Gradient */
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .form-container {
+                padding: 25px;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            input[type="submit"] {
+                font-size: 14px;
+            }
+
+            .header {
+                padding: 15px 0;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Instagram Logo" style="width: 100px; height: auto;">
+        <h1>FollowerMonitor</h1>
+    </div>
+    
+    <!-- Form Section -->
+    <div class="form-container">
+        <h2>Enter your Instagram Username and Pushover Credentials</h2>
+        <form method="POST">
+            <label for="username">Instagram Username:</label><br>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="user_key">Pushover User Key:</label><br>
+            <input type="text" id="user_key" name="user_key" required><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+ <!-- Instructions Section -->
+<div class="instructions-box">
+    <h3>How to Get Your Pushover User Key:</h3>
+    <p>Follow these steps to obtain your Pushover User Key:</p>
+
+    <h4>Step-by-Step with Screenshots:</h4>
+    <p>Here are the screenshots to guide you:</p>
+    <ol>
+        <li>
+            <strong>Step 1:</strong> Download the <a href="https://pushover.net/" target="_blank">Pushover App</a>.
+        </li>
+        <li>
+            <strong>Step 2:</strong> Sign in or create an account.
+            <br><img src="path_to_screenshot_2.png" alt="Screenshot 2" class="instruction-image">
+        </li>
+        <li>
+            <strong>Step 3:</strong> Find your User Key in your dashboard.
+            <br><img src="path_to_screenshot_3.png" alt="Screenshot 3" class="instruction-image">
+        </li>
+    </ol>
+    <p>If you encounter any issues, refer to the Pushover documentation or contact their support for assistance.</p>
+</div>
+
+<!-- Add this CSS to your existing style -->
+<style>
+    /* Instructions Box Styles */
+    .instructions-box {
+        width: 100%; /* Makes the box take full width of the screen */
+        max-width: 800px; /* Maximum width for readability */
+        margin: 20px auto; /* Centers the box with some space above and below */
+        padding: 20px; /* Padding inside the box */
+        background-color: #f9f9f9; /* Light background color */
+        color: #333; /* Text color */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: none; /* Removes box edge (shadow) */
+        box-sizing: border-box;
+        text-align: left; /* Align text to the left for better readability */
+    }
+
+    /* Style for Instruction Images */
+    .instruction-image {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 8px; /* Rounded corners for images */
+    }
+
+    /* Responsive Design for small screens */
+    @media (max-width: 600px) {
+        .instructions-box {
+            padding: 15px; /* Smaller padding on small screens */
+        }
+    }
+</style>
+
+</body>
+</html>
