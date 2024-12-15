@@ -195,4 +195,4 @@ def start_existing_threads():
 
 if __name__ == '__main__':
     start_existing_threads()  # Start monitoring for existing usernames when app starts
-    app.run(debug=True, use_reloader=False)  # Disable Flask's auto-reloading feature
+    app.run(debug=True, host='0.0.0.0', port=4000, use_reloader=False)  # Run on 0.0.0.0 and port 4000
