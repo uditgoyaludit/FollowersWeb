@@ -6,8 +6,20 @@
     <title>Instagram Followers Checker</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Instagram_logo_2022.svg/1024px-Instagram_logo_2022.svg.png" type="image/png">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Instagram Followers Checker</title>
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <!-- Favicon -->
+        <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+        <!-- Or, for PNG or other image formats -->
+        <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
+        <!-- Favicon for Safari -->
+        <link rel="apple-touch-icon" href="{{ url_for('static', filename='icon.png') }}">
+    </head>
+    
     <style>
         /* Global Styles */
         body {
@@ -49,6 +61,24 @@
             font-size: 36px;
             font-weight: 600;
             margin: 0;
+        }
+
+        .header .credit {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .header .credit a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .header .credit a:hover {
+            text-decoration: underline;
         }
 
         /* Form Section */
@@ -179,6 +209,10 @@
     <div class="header">
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Instagram Logo" style="width: 100px; height: auto;">
         <h1>FollowerMonitor</h1>
+        <!-- Credit Section -->
+        <div class="credit">
+            <p>Developed by: <a href="https://www.instagram.com/udit.goyal_/" target="_blank">@udit.goyal_</a></p>
+        </div>
     </div>
     
     <!-- Form Section -->
@@ -195,71 +229,76 @@
         </form>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+{% if messages %}
+    <div class="messages-container">
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
     </div>
 
- <!-- Instructions Section -->
-<div class="instructions-box">
-    <h3>How to Get Your Pushover User Key:</h3>
-    <p>Follow these steps to obtain your Pushover User Key:</p>
+    <!-- Instructions Section -->
+    <div class="instructions-box">
+        <h3>How to Get Your Pushover User Key:</h3>
+        <p>Follow these steps to obtain your Pushover User Key:</p>
 
-    <h4>Step-by-Step with Screenshots:</h4>
-    <p>Here are the screenshots to guide you:</p>
-    <ol>
-        <li>
-            <strong>Step 1:</strong> Download the <a href="https://pushover.net/" target="_blank">Pushover App</a>.
-        </li>
-        <li>
-            <strong>Step 2:</strong> Sign in or create an account.
-            <br><img src="path_to_screenshot_2.png" alt="Screenshot 2" class="instruction-image">
-        </li>
-        <li>
-            <strong>Step 3:</strong> Find your User Key in your dashboard.
-            <br><img src="path_to_screenshot_3.png" alt="Screenshot 3" class="instruction-image">
-        </li>
-    </ol>
-    <p>If you encounter any issues, refer to the Pushover documentation or contact their support for assistance.</p>
-</div>
-
-<!-- Add this CSS to your existing style -->
-<style>
-    /* Instructions Box Styles */
-    .instructions-box {
-        width: 100%; /* Makes the box take full width of the screen */
-        max-width: 800px; /* Maximum width for readability */
-        margin: 20px auto; /* Centers the box with some space above and below */
-        padding: 20px; /* Padding inside the box */
-        background-color: #f9f9f9; /* Light background color */
-        color: #333; /* Text color */
-        border-radius: 12px; /* Rounded corners */
-        box-shadow: none; /* Removes box edge (shadow) */
-        box-sizing: border-box;
-        text-align: left; /* Align text to the left for better readability */
-    }
-
-    /* Style for Instruction Images */
-    .instruction-image {
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-        margin-top: 10px;
-        border-radius: 8px; /* Rounded corners for images */
-    }
-
-    /* Responsive Design for small screens */
-    @media (max-width: 600px) {
-        .instructions-box {
-            padding: 15px; /* Smaller padding on small screens */
+        <h4>Step-by-Step with Screenshots:</h4>
+        <p>Here are the screenshots to guide you:</p>
+        <ol>
+            <li>
+                <strong>Step 1:</strong> Download the <a href="https://play.google.com/store/apps/details?id=net.superblock.pushover" target="_blank">Pushover App</a>.<br>
+            </li>
+            <li>
+                <strong>Step 2:</strong> Sign in or create an account.
+                <br><img src="{{ url_for('static', filename='ss1.jpg') }}" alt="Instagram Logo" style="width: 400px; height: auto" class="instruction-image">
+            </li>
+            <li>
+                <strong>Step 3:</strong> Find your User Key in your dashboard.
+                <br><br><img src="{{ url_for('static', filename='ss1.jpg') }}" alt="Instagram Logo" style="width: 400px; height: auto" class="instruction-image">
+            </li>
+        </ol>
+        <p>If you encounter any issues, refer to the Pushover documentation or contact their support for assistance.</p>
+    </div>
+    <style>
+        /* Flash Message Styling */
+        .message {
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
         }
-    }
-</style>
-
+    
+        .message.started {
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green */
+            border: 1px solid #c3e6cb; /* Light green border */
+        }
+    
+        .message.already {
+            background-color: #fff3cd; /* Light yellow */
+            color: #856404; /* Dark yellow */
+            border: 1px solid #ffeeba; /* Light yellow border */
+        }
+    
+        .message.error {
+            background-color: #f8d7da; /* Light red */
+            color: #721c24; /* Dark red */
+            border: 1px solid #f5c6cb; /* Light red border */
+        }
+    
+        .message.success {
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green */
+            border: 1px solid #c3e6cb; /* Light green border */
+        }
+    </style>
+    
 </body>
 </html>
