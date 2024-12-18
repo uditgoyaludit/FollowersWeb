@@ -12,10 +12,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def check_instagram_username_exists(username):
     # List of proxies with different usernames, passwords, and host details
     proxies_list = [
-        {
-            "http": "http://brd-customer-hl_59e76339-zone-residential_proxy1:ggn4ju0onqjd@brd.superproxy.io:33335",
-            "https": "https://brd-customer-hl_59e76339-zone-residential_proxy1:ggn4ju0onqjd@brd.superproxy.io:33335"
-        },
+          {
+    "http": "http://brd-customer-hl_59e76339-zone-residential_proxy1:ggn4ju0onqjd@brd.superproxy.io:33335",
+    "https": "https://brd-customer-hl_59e76339-zone-residential_proxy1:ggn4ju0onqjd@brd.superproxy.io:33335"
+}
+
       
     ]
     
