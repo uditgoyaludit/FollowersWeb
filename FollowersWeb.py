@@ -13,21 +13,10 @@ def check_instagram_username_exists(username):
     # List of proxies with different usernames, passwords, and host details
     proxies_list = [
         {
-            "http": "http://brd-customer-hl_f0d25c59-zone-residential_proxy1:883zbumj1r1p@brd.superproxy.io:33335",
-            "https": "https://brd-customer-hl_f0d25c59-zone-residential_proxy1:883zbumj1r1p@brd.superproxy.io:33335"
+            "http": "http:/brd-customer-hl_59e76339-zone-residential_proxy1:ggn4ju0onqjd@brd.superproxy.io:33335",
+            "https": "https:/brd-customer-hl_59e76339-zone-residential_proxy1:ggn4ju0onqjd@brd.superproxy.io:33335"
         },
-        {
-            "http": "http://brd-customer-hl_de20a170-zone-residential_proxy1:wxcp53p9mbzs@brd.superproxy.io:33335",
-            "https": "https://brd-customer-hl_de20a170-zone-residential_proxy1:wxcp53p9mbzs@brd.superproxy.io:33335"
-        },
-        {
-            "http": "http://brd-customer-hl_0a108a61-zone-residential_proxy1:omfu311fmszk@brd.superproxy.io:33335",
-            "https": "https://brd-customer-hl_0a108a61-zone-residential_proxy1:omfu311fmszk@brd.superproxy.io:33335"
-        },
-        {
-            "http": "http://brd-customer-hl_7fb69707-zone-residential_proxy1:d379rnk5pkut@brd.superproxy.io:33335",
-            "https": "https://brd-customer-hl_7fb69707-zone-residential_proxy1:d379rnk5pkut@brd.superproxy.io:33335"
-        }
+      
     ]
     
     # Randomly choose a proxy from the list
