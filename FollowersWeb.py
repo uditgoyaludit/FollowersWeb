@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import os
 
 app = Flask(__name__)
@@ -26,6 +26,22 @@ def upload_file():
         return jsonify({'message': f'File {filename} uploaded successfully.'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/treasure', methods=['GET'])
+def download_treasure():
+    try:
+        treasure_path = os.path.join(UPLOAD_FOLDER, 'tressure.txt')
+
+        # Check if the file exists
+        if not os.path.exists(treasure_path):
+            return jsonify({'error': 'treasure.txt file not found.'}), 404
+        
+        # Serve the file for download
+        return send_from_directory(directory=UPLOAD_FOLDER, path='tressure.txt', as_attachment=True)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
